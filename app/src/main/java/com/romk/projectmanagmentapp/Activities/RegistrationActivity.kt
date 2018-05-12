@@ -1,4 +1,4 @@
-package com.romk.projectmanagmentapp
+package com.romk.projectmanagmentapp.Activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.romk.projectmanagmentapp.NetworkConnection.HttpPostRequestHandler
+import com.romk.projectmanagmentapp.R
 import org.json.JSONObject
 
 class RegistrationActivity : AppCompatActivity() {

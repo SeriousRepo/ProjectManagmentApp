@@ -1,14 +1,14 @@
-package com.romk.projectmanagmentapp
+package com.romk.projectmanagmentapp.Activities
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.romk.projectmanagmentapp.NetworkConnection.HttpGetRequestHandler
+import com.romk.projectmanagmentapp.Models.SessionModel
 import com.romk.projectmanagmentapp.NetworkConnection.HttpPostRequestHandler
+import com.romk.projectmanagmentapp.R
 import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity() {
@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
 
     fun isPasswordCorrect() : Boolean {
         when {
-            passwordString.isBlank() -> return false
+            passwordString.length < 6 -> return false
             else -> return true
         }
     }
@@ -44,7 +44,8 @@ class LoginActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener {
             emailString = findViewById<EditText>(R.id.email_edit_text).text.toString()
-            passwordString = findViewById<EditText>(R.id.password_edit_text).text.toString()
+            val passwordEditText = findViewById<EditText>(R.id.password_edit_text)
+            passwordString = passwordEditText.text.toString()
 
             if(!isEmailCorrect()) {
                 Toast.makeText(applicationContext, "Email do not match specified restrictions", Toast.LENGTH_SHORT).show()
@@ -61,10 +62,13 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Logged", Toast.LENGTH_SHORT).show()
 
                     val user = JSONObject(connector.get().second.getJSONObject("data").getJSONObject("user"), arrayOf("email", "authentication_token"))
-                    val activityIntent = Intent(this, GroupsActivity::class.java)
-                    activityIntent.putExtra("authentication_token", user.getString("authentication_token"))
-                    activityIntent.putExtra("email", user.getString("email"))
-                    startActivity(activityIntent)
+                    val session = SessionModel.instance
+                    session.email = user.getString("email")
+                    session.token = user.getString("authentication_token")
+
+                    val groupsActivityIntent = Intent(this, GroupsActivity::class.java)
+                    startActivity(groupsActivityIntent)
+                    passwordEditText.text.clear()
                 }
             }
         }

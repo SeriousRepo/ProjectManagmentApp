@@ -1,27 +1,50 @@
 package com.romk.projectmanagmentapp.Adapters
 
+import android.content.Context
+import android.content.Intent
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.romk.projectmanagmentapp.GroupModel
+import com.romk.projectmanagmentapp.Activities.SingleGroupActivity
+import com.romk.projectmanagmentapp.Models.SimpleGroupModel
 import com.romk.projectmanagmentapp.R
 
-class GroupsAdapter(private val data: List<GroupModel>) : RecyclerView.Adapter<GroupsAdapter.ViewHolder>() {
-
-    class ViewHolder(var textView: View) : RecyclerView.ViewHolder(textView)
+class GroupsAdapter(activityContext: Context, private val data: List<SimpleGroupModel>) : RecyclerView.Adapter<GroupsAdapter.ViewHolder>() {
+    var context = activityContext
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupsAdapter.ViewHolder {
         val textView = LayoutInflater.from(parent.context).
-                inflate(R.layout.groups_text_view, parent, false) as View
+                inflate(R.layout.text_view_groups, parent, false) as View
 
         return ViewHolder(textView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textView.findViewById<TextView>(R.id.group_text_view).text = data[position].groupName
+        holder.bindData(data[position])
     }
 
     override fun getItemCount() = data.size
+
+    inner class ViewHolder(var textView: View) : RecyclerView.ViewHolder(textView) {
+
+        private var view = textView
+        private lateinit var group : SimpleGroupModel
+
+        init {
+            view.setOnClickListener{
+                val singleGroupActivityIntent = Intent(context, SingleGroupActivity::class.java)
+                singleGroupActivityIntent.putExtra("id", group.id)
+                context.startActivity(singleGroupActivityIntent)
+            }
+        }
+
+        fun bindData(groupToBind : SimpleGroupModel) {
+            group = groupToBind
+            view.findViewById<TextView>(R.id.group_text_view).text = group.groupName
+        }
+    }
 }
