@@ -1,4 +1,4 @@
-package com.romk.projectmanagmentapp.Connector
+package com.romk.projectmanagmentapp.NetworkConnection
 
 import android.os.AsyncTask
 import org.json.JSONObject
@@ -6,12 +6,11 @@ import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 
-class Connector : AsyncTask<String, Void, Int>() {
+class HttpPostRequestHandler : AsyncTask<String, Void, Pair<Int, JSONObject>>() {
     var responseCode = 0
     var responseBody = JSONObject()
 
-    override fun doInBackground(vararg params: String): Int {
-        responseCode = 500
+    override fun doInBackground(vararg params: String): Pair<Int, JSONObject> {
         try {
             val url = URL(params[0])
             val connection = url.openConnection() as HttpURLConnection
@@ -26,20 +25,20 @@ class Connector : AsyncTask<String, Void, Int>() {
             responseCode = connection.responseCode
             if (responseCode == 201) {
                 val responseReader = BufferedReader(InputStreamReader(connection.inputStream))
-                var line: String = responseReader.readLine()
-                val stringBuilder = StringBuilder()
-                while (line.isEmpty()) {
-                    stringBuilder.append(line)
+                var line: String
+                var stringBuilder = StringBuilder()
+                do {
                     line = responseReader.readLine()
-                }
+                    stringBuilder.append(line)
+                } while (line.isEmpty())
+
                 responseReader.close()
+                responseBody = JSONObject(stringBuilder.toString())
             }
-            connection.disconnect()
         }
         catch (exception: Exception) {
             System.out.println(exception.message)
         }
-
-        return responseCode
+        return Pair(responseCode, responseBody)
     }
 }
