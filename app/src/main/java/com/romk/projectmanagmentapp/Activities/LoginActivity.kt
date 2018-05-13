@@ -43,8 +43,8 @@ class LoginActivity : AppCompatActivity() {
         val registerButton = findViewById<Button>(R.id.register_button)
 
         loginButton.setOnClickListener {
-            emailString = findViewById<EditText>(R.id.email_edit_text).text.toString()
-            val passwordEditText = findViewById<EditText>(R.id.password_edit_text)
+            emailString = findViewById<EditText>(R.id.login_email_edit_text).text.toString()
+            val passwordEditText = findViewById<EditText>(R.id.login_password_edit_text)
             passwordString = passwordEditText.text.toString()
 
             if(!isEmailCorrect()) {
@@ -59,14 +59,12 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Something was wrong", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    Toast.makeText(applicationContext, "Logged", Toast.LENGTH_SHORT).show()
 
                     val user = JSONObject(connector.get().second.getJSONObject("data").getJSONObject("user"), arrayOf("email", "authentication_token"))
                     val session = SessionModel.instance
                     session.email = user.getString("email")
                     session.token = user.getString("authentication_token")
-
-                    val groupsActivityIntent = Intent(this, GroupsActivity::class.java)
+                    val groupsActivityIntent = Intent(this, TablesActivity::class.java)
                     startActivity(groupsActivityIntent)
                     passwordEditText.text.clear()
                 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.widget.TextView
 import android.widget.Toast
 import com.romk.projectmanagmentapp.Adapters.GroupMembersAdapter
 import com.romk.projectmanagmentapp.Models.ExtendedGroupModel
@@ -31,6 +32,7 @@ class SingleGroupActivity : AppCompatActivity() {
         getGroup()
         if(groupId > 0) {
             setRecyclerView()
+            setView()
         }
         else {
             Toast.makeText(this, "incorect group id", Toast.LENGTH_SHORT).show()
@@ -68,12 +70,16 @@ class SingleGroupActivity : AppCompatActivity() {
     fun setRecyclerView() {
         viewManager = LinearLayoutManager(this)
 
-        viewAdapter = GroupMembersAdapter(group.members)
+        viewAdapter = GroupMembersAdapter(group)
 
         recyclerView = findViewById<RecyclerView>(R.id.members_recycler_view).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
         }
+    }
+
+    fun setView() {
+        findViewById<TextView>(R.id.group_name).text = group.groupName
     }
 }

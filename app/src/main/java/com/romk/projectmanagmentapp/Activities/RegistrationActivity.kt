@@ -28,8 +28,8 @@ class RegistrationActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.login_button)
 
         registerButton.setOnClickListener {
-            emailString = findViewById<EditText>(R.id.email_edit_text).text.toString()
-            passwordString = findViewById<EditText>(R.id.password_edit_text).text.toString()
+            emailString = findViewById<EditText>(R.id.registration_email_edit_text).text.toString()
+            passwordString = findViewById<EditText>(R.id.registration_password_edit_text).text.toString()
             confirmationPasswordString = findViewById<EditText>(R.id.confirm_password_edit_text).text.toString()
             if (!isEmailCorrect()) {
                 Toast.makeText(applicationContext, "Email do not match specified restrictions", Toast.LENGTH_SHORT).show()
