@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.romk.projectmanagmentapp.Activities.TablesActivity
+import com.romk.projectmanagmentapp.Activities.SingleTableActivity
 import com.romk.projectmanagmentapp.Models.TableModel
 import com.romk.projectmanagmentapp.R
 
@@ -34,9 +34,9 @@ class TablesAdapter(activityContext: Context, private val data: List<TableModel>
 
         init {
             view.setOnClickListener{
-                //val singleGroupActivityIntent = Intent(context, TablesActivity::class.java)
-                //singleGroupActivityIntent.putExtra("id", table.id)
-                //context.startActivity(singleGroupAc`tivityIntent)
+                val singleTableActivityIntent = Intent(context, SingleTableActivity::class.java)
+                singleTableActivityIntent.putExtra("id", table.id)
+                context.startActivity(singleTableActivityIntent)
             }
         }
 

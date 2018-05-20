@@ -27,7 +27,7 @@ class GroupsAdapter(activityContext: Context, private val data: List<SimpleGroup
 
     override fun getItemCount() = data.size
 
-    inner class ViewHolder(var textView: View) : RecyclerView.ViewHolder(textView) {
+    inner class ViewHolder(textView: View) : RecyclerView.ViewHolder(textView) {
 
         private var view = textView
         private lateinit var group : SimpleGroupModel
