@@ -1,9 +1,12 @@
 package com.romk.projectmanagmentapp.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import com.romk.projectmanagmentapp.Adapters.TablesAdapter
 import com.romk.projectmanagmentapp.Models.SessionModel
 import com.romk.projectmanagmentapp.Models.TableModel
@@ -21,12 +24,32 @@ class TablesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tables)
+        setSupportActionBar(findViewById(R.id.tables_toolbar))
 
         getTables()
         setRecyclerView()
     }
 
-    fun setRecyclerView() {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.tables_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId){
+        R.id.menu_add -> {
+            openNewTableActivity()
+            true
+        }
+        R.id.menu_logout -> {
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setRecyclerView() {
         viewManager = LinearLayoutManager(this)
 
         viewAdapter = TablesAdapter(this, tablesModels)
@@ -38,7 +61,7 @@ class TablesActivity : AppCompatActivity() {
         }
     }
 
-    fun getTables() {
+    private fun getTables() {
         val connection = HttpGetRequestHandler().execute("http://kanban-project-management-api.herokuapp.com/v1/tables", SessionModel.instance.email, SessionModel.instance.token)
         if (connection.get().first == 200) {
             val jsonTables = connection.get().second.getJSONArray("data")
@@ -50,5 +73,10 @@ class TablesActivity : AppCompatActivity() {
                 tablesModels.add(table)
             }
         }
+    }
+
+    private fun openNewTableActivity() {
+        val newTableActivityIntent = Intent(this, NewTableActivity::class.java)
+        startActivity(newTableActivityIntent)
     }
 }
