@@ -79,9 +79,8 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun getJsonString(): String {
-        val parameters = HashMap<String, String>()
-        parameters.put("email", emailString)
-        parameters.put("password", passwordString)
-        return JSONObject(parameters).toString()
+        val json = JSONObject().put("email", emailString)
+                               .put("password", passwordString)
+        return json.toString()
     }
 }

@@ -1,6 +1,7 @@
 package com.romk.projectmanagmentapp.NetworkConnection
 
 import android.os.AsyncTask
+import android.util.Log
 import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
@@ -16,8 +17,16 @@ class HttpPostRequestHandler : AsyncTask<String, Void, Pair<Int, JSONObject>>() 
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "POST"
             connection.setRequestProperty("Content-Type", "application/json")
+            Log.d("size", params.size.toString())
+            if(params.size > 2) {
+                connection.setRequestProperty("X-User-Email", params[2])
+                connection.setRequestProperty("X-User-Token", params[3])
+                Log.d("json", params[1])
+                Log.d("url", params[0])
+                Log.d("email", params[2])
+                Log.d("token", params[3])
+            }
             connection.connect()
-
             val requestWriter = BufferedWriter(OutputStreamWriter(connection.outputStream))
             requestWriter.write(params[1])
             requestWriter.flush()
