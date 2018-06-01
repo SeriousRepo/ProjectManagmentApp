@@ -35,7 +35,7 @@ class GroupsAdapter(activityContext: Context, private val data: List<SimpleGroup
         init {
             view.setOnClickListener{
                 val singleGroupActivityIntent = Intent(context, SingleGroupActivity::class.java)
-                singleGroupActivityIntent.putExtra("id", group.id)
+                singleGroupActivityIntent.putExtra("groupId", group.id)
                 context.startActivity(singleGroupActivityIntent)
             }
         }

@@ -45,7 +45,6 @@ class NewTableActivity : AppCompatActivity() {
     }
 
     private fun getJsonString(): String {
-        val parameters = HashMap<String, String>()
         val json = JSONObject().put("name", name)
                                .put("is_private", privacy)
         return json.toString()

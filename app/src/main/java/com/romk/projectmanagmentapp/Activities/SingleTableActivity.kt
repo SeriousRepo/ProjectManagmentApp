@@ -1,14 +1,19 @@
 package com.romk.projectmanagmentapp.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import com.romk.projectmanagmentapp.Adapters.ListsAdapter
 import com.romk.projectmanagmentapp.Models.*
+import com.romk.projectmanagmentapp.NetworkConnection.HttpDeleteRequestHandler
 import com.romk.projectmanagmentapp.NetworkConnection.HttpGetRequestHandler
 import com.romk.projectmanagmentapp.R
+import com.romk.projectmanagmentapp.Utils
 import org.json.JSONObject
 
 class SingleTableActivity : AppCompatActivity() {
@@ -21,8 +26,9 @@ class SingleTableActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tableId = intent.extras.getInt("id")
+        tableId = intent.extras.getInt("tableId")
         setContentView(R.layout.activity_single_table)
+        setSupportActionBar(findViewById(R.id.single_table_toolbar))
 
 
         getTable()
@@ -31,6 +37,30 @@ class SingleTableActivity : AppCompatActivity() {
         }
         else {
             Toast.makeText(this, "incorect table id", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.single_table_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId){
+        R.id.menu_add -> {
+            openNewListActivity()
+            true
+        }
+        R.id.menu_remove -> {
+            removeTable()
+            true
+        }
+        R.id.menu_logout -> {
+            Utils().deleteSession(this)
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
         }
     }
 
@@ -62,6 +92,29 @@ class SingleTableActivity : AppCompatActivity() {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
+        }
+    }
+
+    private fun openNewListActivity() {
+        val newListActivityIntent = Intent(this, NewListActivity::class.java)
+        newListActivityIntent.putExtra("tableId", tableId)
+        startActivity(newListActivityIntent)
+    }
+
+    private fun removeTable() {
+        val connection = HttpDeleteRequestHandler().execute(
+            "http://kanban-project-management-api.herokuapp.com/v1/tables/${tableId}",
+            SessionModel.instance.email,
+            SessionModel.instance.token)
+
+        if(connection.get() == 200)
+        {
+            val tablesActivityIntent = Intent(this, TablesActivity::class.java)
+            startActivity(tablesActivityIntent)
+            Toast.makeText(this, "Successfuly removed table", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(this, "Connection error, code ${connection.get()}", Toast.LENGTH_SHORT).show()
         }
     }
 }

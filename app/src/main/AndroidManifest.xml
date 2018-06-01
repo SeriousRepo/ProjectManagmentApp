@@ -27,6 +27,7 @@
         <activity android:name=".Activities.SingleTableActivity"/>
         <activity android:name=".Activities.NewTableActivity"/>
         <activity android:name=".Activities.LogoutActivity"/>
+        <activity android:name=".Activities.NewListActivity"/>
     </application>
 
 </manifest>

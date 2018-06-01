@@ -35,7 +35,7 @@ class TablesAdapter(activityContext: Context, private val data: List<TableModel>
         init {
             view.setOnClickListener{
                 val singleTableActivityIntent = Intent(context, SingleTableActivity::class.java)
-                singleTableActivityIntent.putExtra("id", table.id)
+                singleTableActivityIntent.putExtra("tableId", table.id)
                 context.startActivity(singleTableActivityIntent)
             }
         }

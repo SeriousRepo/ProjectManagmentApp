@@ -15,6 +15,7 @@ import com.romk.projectmanagmentapp.Models.TableModel
 import com.romk.projectmanagmentapp.NetworkConnection.HttpDeleteRequestHandler
 import com.romk.projectmanagmentapp.NetworkConnection.HttpGetRequestHandler
 import com.romk.projectmanagmentapp.R
+import com.romk.projectmanagmentapp.Utils
 import org.json.JSONObject
 
 class TablesActivity : AppCompatActivity() {
@@ -45,7 +46,7 @@ class TablesActivity : AppCompatActivity() {
             true
         }
         R.id.menu_logout -> {
-            deleteSession()
+            Utils().deleteSession(this)
             true
         }
         else -> {
@@ -82,19 +83,5 @@ class TablesActivity : AppCompatActivity() {
     private fun openNewTableActivity() {
         val newTableActivityIntent = Intent(this, NewTableActivity::class.java)
         startActivity(newTableActivityIntent)
-    }
-
-    private fun deleteSession() {
-        val connection = HttpDeleteRequestHandler().execute("http://kanban-project-management-api.herokuapp.com/v1/sessions",
-                    SessionModel.instance.email,
-                    SessionModel.instance.token
-        )
-        if (connection.get() == 200) {
-            val logoutActivityIntent = Intent(this, LogoutActivity::class.java)
-            startActivity(logoutActivityIntent)
-        }
-        else {
-            Toast.makeText(this, "Connection error, code ${connection.get()}", Toast.LENGTH_SHORT).show()
-        }
     }
 }

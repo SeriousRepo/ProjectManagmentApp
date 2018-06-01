@@ -25,7 +25,7 @@ class SingleGroupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        groupId = intent.extras.getInt("id")
+        groupId = intent.extras.getInt("groupId")
         setContentView(R.layout.activity_single_group)
 
 
