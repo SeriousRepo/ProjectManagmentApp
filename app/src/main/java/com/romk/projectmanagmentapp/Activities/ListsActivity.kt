@@ -16,9 +16,10 @@ import com.romk.projectmanagmentapp.R
 import com.romk.projectmanagmentapp.Utils
 import org.json.JSONObject
 
-class SingleTableActivity : AppCompatActivity() {
+class ListsActivity : AppCompatActivity() {
     private var tableId = 0
     private val listModels = mutableListOf<ListModel>()
+    private val cardModels = mutableListOf<List<CardModel>>()
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -27,17 +28,12 @@ class SingleTableActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tableId = intent.extras.getInt("tableId")
-        setContentView(R.layout.activity_single_table)
+        setContentView(R.layout.activity_lists)
         setSupportActionBar(findViewById(R.id.single_table_toolbar))
 
-
         getTable()
-        if(tableId > 0) {
-            setRecyclerView()
-        }
-        else {
-            Toast.makeText(this, "incorect table id", Toast.LENGTH_SHORT).show()
-        }
+        getCards()
+        setRecyclerView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -64,14 +60,14 @@ class SingleTableActivity : AppCompatActivity() {
         }
     }
 
-    fun getTable() {
+    private fun getTable() {
         val connection = HttpGetRequestHandler().execute(
             "http://kanban-project-management-api.herokuapp.com/v1/tables/${tableId}/lists",
             SessionModel.instance.email,
             SessionModel.instance.token
         )
         if(connection.get().first != 200) {
-            Toast.makeText(this, "Couldn't download data", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Connection error ${connection.get().first}", Toast.LENGTH_SHORT).show()
         }
         else {
             val jsonLists = connection.get().second.getJSONArray("data")
@@ -83,10 +79,37 @@ class SingleTableActivity : AppCompatActivity() {
         }
     }
 
-    fun setRecyclerView() {
+    private fun getCards() {
+        for (list in listModels) {
+            val connection = HttpGetRequestHandler().execute(
+                "http://kanban-project-management-api.herokuapp.com/v1/tables/${tableId}/lists/${list.id}/cards",
+                SessionModel.instance.email,
+                SessionModel.instance.token
+            )
+            if(connection.get().first == 200) {
+                val jsonCards = connection.get().second.getJSONArray("data")
+                var jsonCard : JSONObject
+                val cardList = mutableListOf<CardModel>()
+                for (index in 0..(jsonCards.length() - 1)) {
+                    jsonCard = jsonCards.getJSONObject(index)
+                    cardList.add(CardModel(jsonCard.getInt("id"),
+                        jsonCard.getString("title"),
+                        jsonCard.getString("description"))
+                    )
+                }
+                cardModels.add(cardList)
+            }
+            else {
+                Toast.makeText(this, "Connection error ${connection.get().first}", Toast.LENGTH_SHORT).show()
+                break
+            }
+        }
+    }
+
+    private fun setRecyclerView() {
         viewManager = LinearLayoutManager(this)
 
-        viewAdapter = ListsAdapter(listModels)
+        viewAdapter = ListsAdapter(listModels, cardModels)
 
         recyclerView = findViewById<RecyclerView>(R.id.lists_recycler_view).apply {
             setHasFixedSize(true)

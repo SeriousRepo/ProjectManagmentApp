@@ -51,7 +51,7 @@ class NewListActivity : AppCompatActivity() {
             SessionModel.instance.token
         )
         if (connection.get().first == 201) {
-            val singleTableActivityIntent = Intent(this, SingleTableActivity::class.java)
+            val singleTableActivityIntent = Intent(this, ListsActivity::class.java)
             singleTableActivityIntent.putExtra("tableId", tableId)
             startActivity(singleTableActivityIntent)
         }

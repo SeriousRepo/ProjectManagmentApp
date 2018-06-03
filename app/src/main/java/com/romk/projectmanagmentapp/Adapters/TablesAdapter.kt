@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.romk.projectmanagmentapp.Activities.SingleTableActivity
+import com.romk.projectmanagmentapp.Activities.ListsActivity
 import com.romk.projectmanagmentapp.Models.TableModel
 import com.romk.projectmanagmentapp.R
 
@@ -27,14 +27,14 @@ class TablesAdapter(activityContext: Context, private val data: List<TableModel>
 
     override fun getItemCount() = data.size
 
-    inner class ViewHolder(var textView: View) : RecyclerView.ViewHolder(textView) {
+    inner class ViewHolder(textView: View) : RecyclerView.ViewHolder(textView) {
 
         private var view = textView
         private lateinit var table : TableModel
 
         init {
             view.setOnClickListener{
-                val singleTableActivityIntent = Intent(context, SingleTableActivity::class.java)
+                val singleTableActivityIntent = Intent(context, ListsActivity::class.java)
                 singleTableActivityIntent.putExtra("tableId", table.id)
                 context.startActivity(singleTableActivityIntent)
             }
@@ -43,6 +43,7 @@ class TablesAdapter(activityContext: Context, private val data: List<TableModel>
         fun bindData(tableToBind : TableModel) {
             table = tableToBind
             view.findViewById<TextView>(R.id.view_table).text = table.name
+
         }
     }
 }
