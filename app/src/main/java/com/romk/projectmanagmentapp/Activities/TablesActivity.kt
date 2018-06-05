@@ -59,7 +59,7 @@ class TablesActivity : AppCompatActivity() {
     private fun setRecyclerView() {
         viewManager = LinearLayoutManager(this)
 
-        viewAdapter = TablesAdapter(this, tablesModels)
+        viewAdapter = TablesAdapter(this, tablesModels, groupId)
 
         recyclerView = findViewById<RecyclerView>(R.id.tables_view_recycler_view).apply {
             setHasFixedSize(true)

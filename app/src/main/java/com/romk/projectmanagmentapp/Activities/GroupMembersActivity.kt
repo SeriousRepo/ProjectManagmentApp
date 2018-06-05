@@ -16,7 +16,7 @@ import org.json.JSONObject
 
 class GroupMembersActivity : AppCompatActivity() {
 
-    /*private var groupId = 0
+    private var groupId = 0
     private lateinit var group : ExtendedGroupModel
 
     private lateinit var recyclerView: RecyclerView
@@ -26,17 +26,11 @@ class GroupMembersActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         groupId = intent.extras.getInt("groupId")
-        setContentView(R.layout.activity_single_group)
+        setContentView(R.layout.activity_group_members)
 
 
         getGroup()
-        if(groupId > 0) {
-            setRecyclerView()
-            setView()
-        }
-        else {
-            Toast.makeText(this, "incorect group id", Toast.LENGTH_SHORT).show()
-        }
+        setRecyclerView()
     }
 
     fun getGroup() {
@@ -78,8 +72,4 @@ class GroupMembersActivity : AppCompatActivity() {
             adapter = viewAdapter
         }
     }
-
-    fun setView() {
-        findViewById<TextView>(R.id.group_name).text = group.groupName
-    }*/
 }

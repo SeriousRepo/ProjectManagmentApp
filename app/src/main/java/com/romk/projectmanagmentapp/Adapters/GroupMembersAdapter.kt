@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.romk.projectmanagmentapp.Models.ExtendedGroupModel
-import com.romk.projectmanagmentapp.Models.UserModel
 import com.romk.projectmanagmentapp.R
 
 class GroupMembersAdapter(private val data: ExtendedGroupModel) : RecyclerView.Adapter<GroupMembersAdapter.ViewHolder>() {
