@@ -73,6 +73,7 @@ class ListsAdapter(private val lists: List<ListModel>, private val cards: List<L
                 cardsLinearLayout.addView(textView, layoutParams)
             }
             listNameTextView.setOnClickListener { onClickListName() }
+            listNameTextView.setOnLongClickListener { onLongClickName() }
         }
 
         fun onClickListName() {
@@ -82,6 +83,12 @@ class ListsAdapter(private val lists: List<ListModel>, private val cards: List<L
             else {
                 cardsLinearLayout.visibility = View.VISIBLE
             }
+        }
+
+        fun onLongClickName() : Boolean {
+
+
+            return true
         }
     }
 

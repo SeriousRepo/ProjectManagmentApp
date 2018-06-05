@@ -14,9 +14,9 @@ import com.romk.projectmanagmentapp.NetworkConnection.HttpGetRequestHandler
 import com.romk.projectmanagmentapp.R
 import org.json.JSONObject
 
-class SingleGroupActivity : AppCompatActivity() {
+class GroupMembersActivity : AppCompatActivity() {
 
-    private var groupId = 0
+    /*private var groupId = 0
     private lateinit var group : ExtendedGroupModel
 
     private lateinit var recyclerView: RecyclerView
@@ -81,5 +81,5 @@ class SingleGroupActivity : AppCompatActivity() {
 
     fun setView() {
         findViewById<TextView>(R.id.group_name).text = group.groupName
-    }
+    }*/
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/tables_toolbar"
+        android:id="@+id/new_group_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -15,7 +14,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <EditText
-        android:id="@+id/new_table_name_edit_text"
+        android:id="@+id/new_group_name_edit_text"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="8dp"
@@ -25,10 +24,10 @@
         android:hint="name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tables_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/new_group_toolbar" />
 
     <Button
-        android:id="@+id/button_create_tabble"
+        android:id="@+id/button_create_group"
         android:layout_width="250dp"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
@@ -38,7 +37,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_table_name_edit_text"
-        android:text="CREATE TABLE"/>
+        app:layout_constraintTop_toBottomOf="@+id/new_group_name_edit_text"
+        android:text="CREATE GROUP"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -19,6 +19,7 @@ import com.romk.projectmanagmentapp.Utils
 import org.json.JSONObject
 
 class TablesActivity : AppCompatActivity() {
+    private var groupId = 0
     private val tablesModels = mutableListOf<TableModel>()
 
     private lateinit var recyclerView: RecyclerView
@@ -27,6 +28,7 @@ class TablesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        groupId = intent.extras.getInt("groupId")
         setContentView(R.layout.activity_tables)
         setSupportActionBar(findViewById(R.id.tables_toolbar))
 
@@ -67,14 +69,29 @@ class TablesActivity : AppCompatActivity() {
     }
 
     private fun getTables() {
-        val connection = HttpGetRequestHandler().execute("http://kanban-project-management-api.herokuapp.com/v1/tables", SessionModel.instance.email, SessionModel.instance.token)
+        var uri : String
+        if(groupId == 0) {
+            uri = "http://kanban-project-management-api.herokuapp.com/v1/private_tables"
+        }
+        else {
+            uri = "http://kanban-project-management-api.herokuapp.com/v1/${groupId}/tables"
+        }
+        val connection = HttpGetRequestHandler().execute(uri, SessionModel.instance.email, SessionModel.instance.token)
         if (connection.get().first == 200) {
             val jsonTables = connection.get().second.getJSONArray("data")
             var jsonTable: JSONObject
             var table: TableModel
             for (index in 0..(jsonTables.length() - 1)) {
                 jsonTable = jsonTables.getJSONObject(index)
-                table = TableModel(jsonTable.getInt("id"), jsonTable.getString("name"))
+                table = TableModel(
+                    jsonTable.getInt("id"),
+                    jsonTable.getString("name"),
+                    jsonTable.getBoolean("is_private"),
+                    0
+                )
+                if (groupId != 0) {
+                    table.groupId = jsonTable.getInt("group_id")
+                }
                 tablesModels.add(table)
             }
         }
@@ -82,6 +99,7 @@ class TablesActivity : AppCompatActivity() {
 
     private fun openNewTableActivity() {
         val newTableActivityIntent = Intent(this, NewTableActivity::class.java)
+        newTableActivityIntent.putExtra("groupId", groupId)
         startActivity(newTableActivityIntent)
     }
 }

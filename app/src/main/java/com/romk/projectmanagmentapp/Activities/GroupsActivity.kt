@@ -1,5 +1,6 @@
 package com.romk.projectmanagmentapp.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Gravity
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.romk.projectmanagmentapp.Adapters.GroupsAdapter
@@ -18,6 +20,7 @@ import com.romk.projectmanagmentapp.Models.SessionModel
 import com.romk.projectmanagmentapp.Models.SimpleGroupModel
 import com.romk.projectmanagmentapp.NetworkConnection.HttpGetRequestHandler
 import com.romk.projectmanagmentapp.R
+import com.romk.projectmanagmentapp.Utils
 import org.json.JSONObject
 
 class GroupsActivity : AppCompatActivity() {
@@ -30,9 +33,30 @@ class GroupsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_groups)
+        setSupportActionBar(findViewById(R.id.groups_toolbar))
 
         getGroups()
         setRecyclerView()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.groups_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId){
+        R.id.menu_add -> {
+            openNewGroupActivity()
+            true
+        }
+        R.id.menu_logout -> {
+            Utils().deleteSession(this)
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
     }
 
     fun setRecyclerView() {
@@ -59,5 +83,10 @@ class GroupsActivity : AppCompatActivity() {
                 groupModels.add(group)
             }
         }
+    }
+
+    private fun openNewGroupActivity() {
+        val newGroupActivityIntent = Intent(this, NewGroupActivity::class.java)
+        startActivity(newGroupActivityIntent)
     }
 }

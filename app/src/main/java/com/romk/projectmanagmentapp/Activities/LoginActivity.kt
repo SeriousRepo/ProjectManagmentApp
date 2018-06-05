@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
                     val session = SessionModel.instance
                     session.email = user.getString("email")
                     session.token = user.getString("authentication_token")
-                    val groupsActivityIntent = Intent(this, TablesActivity::class.java)
+                    val groupsActivityIntent = Intent(this, GroupsActivity::class.java)
                     startActivity(groupsActivityIntent)
                     passwordEditText.text.clear()
                 }
@@ -72,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         registerButton.setOnClickListener {
-            val registrationActivityIntent = Intent(this, GroupsActivity::class.java)
+            val registrationActivityIntent = Intent(this, RegistrationActivity::class.java)
             startActivity(registrationActivityIntent)
         }
     }

@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.romk.projectmanagmentapp.Activities.SingleGroupActivity
+import com.romk.projectmanagmentapp.Activities.TablesActivity
 import com.romk.projectmanagmentapp.Models.SimpleGroupModel
 import com.romk.projectmanagmentapp.R
 
@@ -22,7 +22,12 @@ class GroupsAdapter(activityContext: Context, private val data: List<SimpleGroup
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindData(data[position])
+        if(position == 0) {
+            holder.setPrivate()
+        }
+        else {
+            holder.bindData(data[position - 1])
+        }
     }
 
     override fun getItemCount() = data.size
@@ -34,10 +39,15 @@ class GroupsAdapter(activityContext: Context, private val data: List<SimpleGroup
 
         init {
             view.setOnClickListener{
-                val singleGroupActivityIntent = Intent(context, SingleGroupActivity::class.java)
-                singleGroupActivityIntent.putExtra("groupId", group.id)
-                context.startActivity(singleGroupActivityIntent)
+                val tablesActivityIntent = Intent(context, TablesActivity::class.java)
+                tablesActivityIntent.putExtra("groupId", group.id)
+                context.startActivity(tablesActivityIntent)
             }
+        }
+
+        fun setPrivate() {
+            group = SimpleGroupModel(0,0, "")
+            view.findViewById<TextView>(R.id.group_text_view).text = "Private groups"
         }
 
         fun bindData(groupToBind : SimpleGroupModel) {

@@ -22,12 +22,13 @@
         </activity>
         <activity android:name=".Activities.GroupsActivity"/>
         <activity android:name=".Activities.RegistrationActivity"/>
-        <activity android:name=".Activities.SingleGroupActivity"/>
+        <activity android:name=".Activities.GroupMembersActivity"/>
         <activity android:name=".Activities.TablesActivity"/>
         <activity android:name=".Activities.ListsActivity"/>
         <activity android:name=".Activities.NewTableActivity"/>
         <activity android:name=".Activities.LogoutActivity"/>
         <activity android:name=".Activities.NewListActivity"/>
+        <activity android:name=".Activities.NewGroupActivity"/>
     </application>
 
 </manifest>

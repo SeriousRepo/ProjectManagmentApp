@@ -13,11 +13,12 @@ import com.romk.projectmanagmentapp.R
 import org.json.JSONObject
 
 class NewTableActivity : AppCompatActivity() {
-    private var privacy = true
+    var groupId = 0
     private lateinit var name : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        groupId = intent.extras.getInt("groupId")
         setContentView(R.layout.activity_new_table)
 
         bindButtons()
@@ -25,8 +26,6 @@ class NewTableActivity : AppCompatActivity() {
 
     private fun setTableProperties() {
         name = findViewById<EditText>(R.id.new_table_name_edit_text).text.toString()
-        val checkBox = findViewById<CheckBox>(R.id.check_box_privacy)
-        privacy = checkBox.isChecked
     }
 
     private fun createTable() {
@@ -37,6 +36,7 @@ class NewTableActivity : AppCompatActivity() {
         )
         if (connection.get().first == 201) {
             val tablesActivityIntent = Intent(this, TablesActivity::class.java)
+            tablesActivityIntent.putExtra("groupId", groupId)
             startActivity(tablesActivityIntent)
         }
         else {
@@ -46,7 +46,9 @@ class NewTableActivity : AppCompatActivity() {
 
     private fun getJsonString(): String {
         val json = JSONObject().put("name", name)
-                               .put("is_private", privacy)
+        if(groupId != 0) {
+            json.put("group_id", groupId)
+        }
         return json.toString()
     }
 
@@ -54,8 +56,7 @@ class NewTableActivity : AppCompatActivity() {
         val createButton = findViewById<Button>(R.id.button_create_tabble)
         createButton.setOnClickListener {
             setTableProperties()
-            if (name.isEmpty())
-            {
+            if (name.isEmpty()) {
                 Toast.makeText(this, "Name of table can not be empty.", Toast.LENGTH_SHORT).show()
             }
             createTable()
