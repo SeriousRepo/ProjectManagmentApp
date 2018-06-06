@@ -13,12 +13,15 @@ import org.json.JSONObject
 
 class NewListActivity : AppCompatActivity() {
     private lateinit var name : String
-    var tableId = 0
+    private var tableId = 0
+    private var groupId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_list)
         tableId = intent.extras.getInt("tableId")
+        groupId = intent.extras.getInt("groupId")
+
 
         bindButtons()
     }
@@ -51,9 +54,10 @@ class NewListActivity : AppCompatActivity() {
             SessionModel.instance.token
         )
         if (connection.get().first == 201) {
-            val singleTableActivityIntent = Intent(this, ListsActivity::class.java)
-            singleTableActivityIntent.putExtra("tableId", tableId)
-            startActivity(singleTableActivityIntent)
+            val listsActivityIntent = Intent(this, ListsActivity::class.java)
+            listsActivityIntent.putExtra("tableId", tableId)
+            listsActivityIntent.putExtra("groupId", groupId)
+            startActivity(listsActivityIntent)
         }
         else {
             Toast.makeText(this, "Connection error, code ${connection.get().first}", Toast.LENGTH_SHORT).show()

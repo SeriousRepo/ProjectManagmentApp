@@ -11,8 +11,9 @@ import com.romk.projectmanagmentapp.Activities.TablesActivity
 import com.romk.projectmanagmentapp.Models.SimpleGroupModel
 import com.romk.projectmanagmentapp.R
 
-class GroupsAdapter(activityContext: Context, private val data: List<SimpleGroupModel>) : RecyclerView.Adapter<GroupsAdapter.ViewHolder>() {
-    var context = activityContext
+class GroupsAdapter(activityContext: Context, data: List<SimpleGroupModel>) : RecyclerView.Adapter<GroupsAdapter.ViewHolder>() {
+    private var context = activityContext
+    private val data = listOf(SimpleGroupModel(0,0,"")) + data
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupsAdapter.ViewHolder {
         val textView = LayoutInflater.from(parent.context).
@@ -23,10 +24,10 @@ class GroupsAdapter(activityContext: Context, private val data: List<SimpleGroup
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(position == 0) {
-            holder.setPrivate()
+            holder.showPrivateTables()
         }
         else {
-            holder.bindData(data[position - 1])
+            holder.bindData(data[position])
         }
     }
 
@@ -45,7 +46,7 @@ class GroupsAdapter(activityContext: Context, private val data: List<SimpleGroup
             }
         }
 
-        fun setPrivate() {
+        fun showPrivateTables() {
             group = SimpleGroupModel(0,0, "")
             view.findViewById<TextView>(R.id.group_text_view).text = "Private groups"
         }

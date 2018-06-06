@@ -17,8 +17,6 @@ class HttpDeleteRequestHandler : AsyncTask<String, Void, Int>() {
             connection.setRequestProperty("X-User-Email", params[1])
             connection.setRequestProperty("X-User-Token", params[2])
             connection.connect()
-            Log.d("email", params[1])
-            Log.d("token", params[2])
             responseCode = connection.responseCode
         }
         catch (exception: Exception) {

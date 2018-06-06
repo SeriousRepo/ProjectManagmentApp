@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.romk.projectmanagmentapp.Models.SessionModel
 import com.romk.projectmanagmentapp.NetworkConnection.HttpPostRequestHandler
 import com.romk.projectmanagmentapp.R
 import org.json.JSONObject
@@ -44,7 +43,7 @@ class RegistrationActivity : AppCompatActivity() {
                 val connector = HttpPostRequestHandler().execute("http://kanban-project-management-api.herokuapp.com/v1/users", getJsonString())
 
                 if (connector.get().first != 200) {
-                    Toast.makeText(applicationContext, "Something was wrong "+connector.get().first, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Connection error, code ${connector.get().first}", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     Toast.makeText(applicationContext, "Registered", Toast.LENGTH_SHORT).show()

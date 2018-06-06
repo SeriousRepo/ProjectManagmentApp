@@ -1,6 +1,8 @@
 package com.romk.projectmanagmentapp.Adapters
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Typeface
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
@@ -9,11 +11,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.romk.projectmanagmentapp.Activities.NewCardActivity
 import com.romk.projectmanagmentapp.Models.CardModel
 import com.romk.projectmanagmentapp.Models.ListModel
+import com.romk.projectmanagmentapp.Models.SessionModel
+import com.romk.projectmanagmentapp.NetworkConnection.HttpPostRequestHandler
 import com.romk.projectmanagmentapp.R
 
-class ListsAdapter(private val lists: List<ListModel>, private val cards: List<List<CardModel>>) : RecyclerView.Adapter<ListsAdapter.ViewHolder>() {
+class ListsAdapter(private val lists: List<ListModel>,
+                   private val cards: List<List<CardModel>>,
+                   private val tableId: Int,
+                   private val groupId: Int) : RecyclerView.Adapter<ListsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListsAdapter.ViewHolder {
         val textView = LayoutInflater.from(parent.context).
@@ -24,11 +32,10 @@ class ListsAdapter(private val lists: List<ListModel>, private val cards: List<L
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.listNameTextView.text = lists[position].name
-
         val numberOfChildTextView = holder.cardsLinearLayout.childCount
         val numberOfChild = cards[position].size
         if (numberOfChild < numberOfChildTextView) {
-            for (index in numberOfChild..(numberOfChildTextView - 1)) {
+            for (index in (numberOfChild + 1 until numberOfChildTextView)) {
                 val currentTextView = holder.cardsLinearLayout.getChildAt(index) as TextView
                 currentTextView.visibility = View.GONE
             }
@@ -36,6 +43,11 @@ class ListsAdapter(private val lists: List<ListModel>, private val cards: List<L
                 val currentTextView = holder.cardsLinearLayout.getChildAt(textViewIndex) as TextView
                 currentTextView.text = cards[position][textViewIndex].title
             }
+            val lastTextView = holder.cardsLinearLayout.getChildAt(numberOfChild) as TextView
+            lastTextView.text = "+"
+            lastTextView.typeface = Typeface.DEFAULT_BOLD
+            lastTextView.textSize = 18f
+            lastTextView.setOnClickListener{ holder.openNewCardActivity(lists[position].id)}
         }
     }
 
@@ -73,7 +85,14 @@ class ListsAdapter(private val lists: List<ListModel>, private val cards: List<L
                 cardsLinearLayout.addView(textView, layoutParams)
             }
             listNameTextView.setOnClickListener { onClickListName() }
-            listNameTextView.setOnLongClickListener { onLongClickName() }
+        }
+
+        fun openNewCardActivity(listId: Int) {
+            val newCardActivityIntent = Intent(context, NewCardActivity::class.java)
+            newCardActivityIntent.putExtra("groupId", groupId)
+            newCardActivityIntent.putExtra("tableId", tableId)
+            newCardActivityIntent.putExtra("listId", listId)
+            context.startActivity(newCardActivityIntent)
         }
 
         fun onClickListName() {
@@ -83,12 +102,6 @@ class ListsAdapter(private val lists: List<ListModel>, private val cards: List<L
             else {
                 cardsLinearLayout.visibility = View.VISIBLE
             }
-        }
-
-        fun onLongClickName() : Boolean {
-
-
-            return true
         }
     }
 

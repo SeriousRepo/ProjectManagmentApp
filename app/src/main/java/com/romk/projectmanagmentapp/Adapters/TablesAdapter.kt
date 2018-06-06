@@ -2,7 +2,10 @@ package com.romk.projectmanagmentapp.Adapters
 
 import android.content.Context
 import android.content.Intent
+import android.opengl.Visibility
+import android.support.design.widget.TabLayout
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +15,15 @@ import com.romk.projectmanagmentapp.Activities.ListsActivity
 import com.romk.projectmanagmentapp.Models.TableModel
 import com.romk.projectmanagmentapp.R
 
-class TablesAdapter(activityContext: Context, private val data: List<TableModel>, private val groupId: Int) : RecyclerView.Adapter<TablesAdapter.ViewHolder>() {
-    var context = activityContext
+class TablesAdapter(activityContext: Context, table: List<TableModel>, private val groupId: Int) : RecyclerView.Adapter<TablesAdapter.ViewHolder>() {
+    private var context = activityContext
+    private var data = table
+
+    init {
+        if (groupId != 0) {
+            data = listOf(TableModel(0,"",false,0)) + table
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TablesAdapter.ViewHolder {
         val textView = LayoutInflater.from(parent.context).
@@ -28,7 +38,7 @@ class TablesAdapter(activityContext: Context, private val data: List<TableModel>
                 holder.showUsersField(groupId)
             }
             else {
-                holder.bindData(data[position - 1])
+                holder.bindData(data[position])
             }
         }
         else {
@@ -57,6 +67,7 @@ class TablesAdapter(activityContext: Context, private val data: List<TableModel>
             view.findViewById<TextView>(R.id.view_table).text = table.name
             view.setOnClickListener{
                 val listsActivityIntent = Intent(context, ListsActivity::class.java)
+                listsActivityIntent.putExtra("groupId", groupId)
                 listsActivityIntent.putExtra("tableId", table.id)
                 context.startActivity(listsActivityIntent)
             }

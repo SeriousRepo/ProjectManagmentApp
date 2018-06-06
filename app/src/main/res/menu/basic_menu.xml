@@ -5,11 +5,8 @@
     <item
         android:id="@+id/menu_add"
         android:icon="@drawable/ic_add"
-        android:title="Create list"
+        android:title="Create table"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/menu_remove"
-        android:title="Remove Group"/>
     <item
         android:id="@+id/menu_logout"
         android:title="Logout"/>

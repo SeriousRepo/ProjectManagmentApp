@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -39,12 +38,21 @@ class TablesActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.tables_menu, menu)
+        if (groupId == 0) {
+            menu.findItem(R.id.menu_remove).isVisible = false
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId){
         R.id.menu_add -> {
             openNewTableActivity()
+            true
+        }
+        R.id.menu_remove -> {
+            if(groupId != 0) {
+                removeGroup()
+            }
             true
         }
         R.id.menu_logout -> {
@@ -69,7 +77,7 @@ class TablesActivity : AppCompatActivity() {
     }
 
     private fun getTables() {
-        var uri : String
+        val uri: String
         if(groupId == 0) {
             uri = "http://kanban-project-management-api.herokuapp.com/v1/private_tables"
         }
@@ -101,5 +109,20 @@ class TablesActivity : AppCompatActivity() {
         val newTableActivityIntent = Intent(this, NewTableActivity::class.java)
         newTableActivityIntent.putExtra("groupId", groupId)
         startActivity(newTableActivityIntent)
+    }
+
+    private fun removeGroup() {
+        val connection = HttpDeleteRequestHandler().execute(
+            "http://kanban-project-management-api.herokuapp.com/v1/groups/${groupId}",
+            SessionModel.instance.email,
+            SessionModel.instance.token)
+        if(connection.get() == 200) {
+            val groupsActivityIntent = Intent(this, GroupsActivity::class.java)
+            startActivity(groupsActivityIntent)
+            Toast.makeText(this, "Removed group", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            Toast.makeText(this, "Connection error, code ${connection.get()}", Toast.LENGTH_SHORT).show()
+        }
     }
 }

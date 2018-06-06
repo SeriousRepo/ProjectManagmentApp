@@ -56,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
             else {
                 val connector = HttpPostRequestHandler().execute("http://kanban-project-management-api.herokuapp.com/v1/sessions", getJsonString())
                 if(connector.get().first != 201) {
-                    Toast.makeText(applicationContext, "Something was wrong", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Connection error, code ${connector.get().first}", Toast.LENGTH_SHORT).show()
                 }
                 else {
 

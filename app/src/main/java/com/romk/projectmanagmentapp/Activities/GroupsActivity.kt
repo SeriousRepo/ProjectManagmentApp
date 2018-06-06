@@ -41,7 +41,7 @@ class GroupsActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.groups_menu, menu)
+        inflater.inflate(R.menu.basic_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

@@ -18,6 +18,7 @@ import org.json.JSONObject
 
 class ListsActivity : AppCompatActivity() {
     private var tableId = 0
+    private var groupId = 0
     private val listModels = mutableListOf<ListModel>()
     private val cardModels = mutableListOf<List<CardModel>>()
 
@@ -28,8 +29,9 @@ class ListsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tableId = intent.extras.getInt("tableId")
+        groupId = intent.extras.getInt("groupId")
         setContentView(R.layout.activity_lists)
-        setSupportActionBar(findViewById(R.id.single_table_toolbar))
+        setSupportActionBar(findViewById(R.id.lists_toolbar))
 
         getTable()
         getCards()
@@ -38,7 +40,7 @@ class ListsActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.single_table_menu, menu)
+        inflater.inflate(R.menu.lists_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -109,7 +111,7 @@ class ListsActivity : AppCompatActivity() {
     private fun setRecyclerView() {
         viewManager = LinearLayoutManager(this)
 
-        viewAdapter = ListsAdapter(listModels, cardModels)
+        viewAdapter = ListsAdapter(listModels, cardModels, tableId, groupId)
 
         recyclerView = findViewById<RecyclerView>(R.id.lists_recycler_view).apply {
             setHasFixedSize(true)
@@ -120,19 +122,21 @@ class ListsActivity : AppCompatActivity() {
 
     private fun openNewListActivity() {
         val newListActivityIntent = Intent(this, NewListActivity::class.java)
+        newListActivityIntent.putExtra("groupId", groupId)
         newListActivityIntent.putExtra("tableId", tableId)
         startActivity(newListActivityIntent)
     }
 
     private fun removeTable() {
         val connection = HttpDeleteRequestHandler().execute(
-            "http://kanban-project-management-api.herokuapp.com/v1/tables/${tableId}",
+        "http://kanban-project-management-api.herokuapp.com/v1/tables/${tableId}",
             SessionModel.instance.email,
             SessionModel.instance.token)
 
         if(connection.get() == 200)
         {
             val tablesActivityIntent = Intent(this, TablesActivity::class.java)
+            tablesActivityIntent.putExtra("groupId", groupId)
             startActivity(tablesActivityIntent)
             Toast.makeText(this, "Successfuly removed table", Toast.LENGTH_SHORT).show()
         }
