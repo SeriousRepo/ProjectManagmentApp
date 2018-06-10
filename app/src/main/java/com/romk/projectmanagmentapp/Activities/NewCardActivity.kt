@@ -3,6 +3,7 @@ package com.romk.projectmanagmentapp.Activities
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -10,6 +11,7 @@ import com.romk.projectmanagmentapp.Models.CardModel
 import com.romk.projectmanagmentapp.Models.SessionModel
 import com.romk.projectmanagmentapp.NetworkConnection.HttpPostRequestHandler
 import com.romk.projectmanagmentapp.R
+import org.json.JSONObject
 
 class NewCardActivity : AppCompatActivity() {
     private var groupId: Int = 0
@@ -25,12 +27,22 @@ class NewCardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_new_card)
         setSupportActionBar(findViewById(R.id.new_card_toolbar))
         bindButtons()
-        getFields()
     }
+
+    //TODO add suport to action bar
 
     private fun bindButtons() {
         val createCardButton = findViewById<Button>(R.id.button_create_card)
-        createCardButton.setOnClickListener{ createCard() }
+        createCardButton.setOnClickListener{
+            getFields()
+            if (cardModel.title.isEmpty())
+            {
+                Toast.makeText(this, "Title of card can not be empty.", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                createCard()
+            }
+        }
     }
 
     private fun getFields() {
@@ -39,9 +51,16 @@ class NewCardActivity : AppCompatActivity() {
         cardModel = CardModel(0, title, description)
     }
 
+    private fun getJson(): String {
+        val json = JSONObject().put("title", cardModel.title)
+                               .put("description", cardModel.description)
+        return json.toString()
+    }
+
     private fun createCard() {
-        /*val connection = HttpPostRequestHandler().execute(
+        val connection = HttpPostRequestHandler().execute(
             "http://kanban-project-management-api.herokuapp.com/v1/tables/${tableId}/lists/${listId}/cards",
+            getJson(),
             SessionModel.instance.email,
             SessionModel.instance.token
         )
@@ -49,9 +68,10 @@ class NewCardActivity : AppCompatActivity() {
             val listsActivityIntent = Intent(this, ListsActivity::class.java)
             listsActivityIntent.putExtra("groupId", groupId)
             listsActivityIntent.putExtra("tableId", tableId)
+            startActivity(listsActivityIntent)
         }
         else {
             Toast.makeText(this, "Connection error, code ${connection.get().first}", Toast.LENGTH_SHORT).show()
-        }*/
+        }
     }
 }

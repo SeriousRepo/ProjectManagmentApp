@@ -27,15 +27,14 @@ class HttpPostRequestHandler : AsyncTask<String, Void, Pair<Int, JSONObject>>() 
             requestWriter.flush()
             requestWriter.close()
             responseCode = connection.responseCode
-            if (responseCode == 201) {
+            if (responseCode == 201 || responseCode == 200) {
                 val responseReader = BufferedReader(InputStreamReader(connection.inputStream))
                 var line: String
-                var stringBuilder = StringBuilder()
+                val stringBuilder = StringBuilder()
                 do {
                     line = responseReader.readLine()
                     stringBuilder.append(line)
                 } while (line.isEmpty())
-
                 responseReader.close()
                 responseBody = JSONObject(stringBuilder.toString())
             }

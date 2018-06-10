@@ -40,7 +40,7 @@ class GroupMembersActivity : AppCompatActivity() {
             SessionModel.instance.token
         )
         if(connection.get().first != 200) {
-            Toast.makeText(this, "Couldn't download data", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Connection error, code ${connection.get().first}", Toast.LENGTH_SHORT).show()
         }
         else {
             val jsonGroup = connection.get().second.getJSONObject("data").getJSONObject("group")

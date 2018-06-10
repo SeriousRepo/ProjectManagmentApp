@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +13,13 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.romk.projectmanagmentapp.Activities.NewCardActivity
+import com.romk.projectmanagmentapp.Activities.TasksListActivity
 import com.romk.projectmanagmentapp.Models.CardModel
 import com.romk.projectmanagmentapp.Models.ListModel
-import com.romk.projectmanagmentapp.Models.SessionModel
-import com.romk.projectmanagmentapp.NetworkConnection.HttpPostRequestHandler
 import com.romk.projectmanagmentapp.R
 
-class ListsAdapter(private val lists: List<ListModel>,
+class ListsAdapter(private val context: Context,
+                   private val lists: List<ListModel>,
                    private val cards: List<List<CardModel>>,
                    private val tableId: Int,
                    private val groupId: Int) : RecyclerView.Adapter<ListsAdapter.ViewHolder>() {
@@ -42,6 +43,10 @@ class ListsAdapter(private val lists: List<ListModel>,
             for (textViewIndex in 0..(numberOfChild - 1)) {
                 val currentTextView = holder.cardsLinearLayout.getChildAt(textViewIndex) as TextView
                 currentTextView.text = cards[position][textViewIndex].title
+                currentTextView.setOnClickListener{
+                    onClickTextView(
+                        lists[position].id,
+                        cards[position][textViewIndex].id)}
             }
             val lastTextView = holder.cardsLinearLayout.getChildAt(numberOfChild) as TextView
             lastTextView.text = "+"
@@ -49,6 +54,15 @@ class ListsAdapter(private val lists: List<ListModel>,
             lastTextView.textSize = 18f
             lastTextView.setOnClickListener{ holder.openNewCardActivity(lists[position].id)}
         }
+    }
+
+    private fun onClickTextView(listId: Int, cardId: Int) {
+        val tasksListActivityIntent = Intent(context, TasksListActivity::class.java)
+        tasksListActivityIntent.putExtra("groupId", groupId)
+        tasksListActivityIntent.putExtra("tableId", tableId)
+        tasksListActivityIntent.putExtra("listId", listId)
+        tasksListActivityIntent.putExtra("cardId", cardId)
+        context.startActivity(tasksListActivityIntent)
     }
 
     override fun getItemCount() = lists.size
@@ -77,7 +91,6 @@ class ListsAdapter(private val lists: List<ListModel>,
                 textView.gravity = Gravity.CENTER
                 textView.setPadding(0, 20, 0, 20)
                 textView.background = ContextCompat.getDrawable(context, R.drawable.background_sub_module_text)
-                //textView.setOnClickListener { onClickTextView(textView)}
                 val layoutParams = LinearLayout.LayoutParams (
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -104,5 +117,4 @@ class ListsAdapter(private val lists: List<ListModel>,
             }
         }
     }
-
 }

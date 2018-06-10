@@ -111,7 +111,7 @@ class ListsActivity : AppCompatActivity() {
     private fun setRecyclerView() {
         viewManager = LinearLayoutManager(this)
 
-        viewAdapter = ListsAdapter(listModels, cardModels, tableId, groupId)
+        viewAdapter = ListsAdapter(this, listModels, cardModels, tableId, groupId)
 
         recyclerView = findViewById<RecyclerView>(R.id.lists_recycler_view).apply {
             setHasFixedSize(true)

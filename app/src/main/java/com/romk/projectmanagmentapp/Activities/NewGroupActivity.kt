@@ -53,7 +53,9 @@ class NewGroupActivity : AppCompatActivity() {
             {
                 Toast.makeText(this, "Name of group can not be empty.", Toast.LENGTH_SHORT).show()
             }
-            createGroup()
+            else {
+                createGroup()
+            }
         }
     }
 }

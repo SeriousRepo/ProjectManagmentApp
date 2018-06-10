@@ -58,7 +58,9 @@ class NewTableActivity : AppCompatActivity() {
             if (name.isEmpty()) {
                 Toast.makeText(this, "Name of table can not be empty.", Toast.LENGTH_SHORT).show()
             }
-            createTable()
+            else {
+                createTable()
+            }
         }
     }
 }

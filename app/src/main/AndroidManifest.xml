@@ -30,6 +30,9 @@
         <activity android:name=".Activities.NewListActivity"/>
         <activity android:name=".Activities.NewGroupActivity"/>
         <activity android:name=".Activities.NewCardActivity"/>
+        <activity android:name=".Activities.TasksListActivity"/>
+        <activity android:name=".Activities.NewTasksListActivity"/>
+        <activity android:name=".Activities.NewTaskActivity"/>
     </application>
 
 </manifest>

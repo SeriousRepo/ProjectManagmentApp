@@ -34,7 +34,9 @@ class NewListActivity : AppCompatActivity() {
             {
                 Toast.makeText(this, "Name of list can not be empty.", Toast.LENGTH_SHORT).show()
             }
-            createList()
+            else {
+                createList()
+            }
         }
     }
 
