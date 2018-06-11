@@ -33,6 +33,12 @@
         <activity android:name=".Activities.TasksListActivity"/>
         <activity android:name=".Activities.NewTasksListActivity"/>
         <activity android:name=".Activities.NewTaskActivity"/>
+        <activity android:name=".Activities.TaskActivity"/>
+        <activity android:name=".Activities.NewMemberActivity"/>
+        <activity android:name=".Activities.EditGroupActivity"/>
+        <activity android:name=".Activities.DeleteGroupMemberActivity"/>
+        <activity android:name=".Activities.EditTableActivity"/>
+        <activity android:name=".Activities.EditCardActivity"/>
     </application>
 
 </manifest>

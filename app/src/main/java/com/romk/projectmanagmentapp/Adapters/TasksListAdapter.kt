@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.romk.projectmanagmentapp.Activities.NewTaskActivity
+import com.romk.projectmanagmentapp.Activities.TaskActivity
 import com.romk.projectmanagmentapp.Models.TasksModel
 import com.romk.projectmanagmentapp.R
 
@@ -44,7 +45,11 @@ class TasksListAdapter(private val context: Context,
                 //if(tasksList[position].tasks[textViewIndex].isFinished) {
                 //    currentTextView.setCompoundDrawablesRelativeWithIntrinsicBounds()
                 //}
-                //currentTextView.setOnClickListener{ onClickTextView(textViewIndex, position)}
+                currentTextView.setOnClickListener{
+                    onClickTextView(
+                        tasksList[position].id,
+                        tasksList[position].tasks[textViewIndex].id)
+                }
             }
             val lastTextView = holder.tasksLinearLayout.getChildAt(numberOfChild) as TextView
             lastTextView.text = "+"
@@ -54,14 +59,16 @@ class TasksListAdapter(private val context: Context,
         }
     }
 
-    /*private fun onClickTextView(listId: Int, cardId: Int) {
-        val tasksActivityIntent = Intent(context, TasksListActivity::class.java)
+    private fun onClickTextView(tasksListId: Int, taskID: Int) {
+        val tasksActivityIntent = Intent(context, TaskActivity::class.java)
         tasksActivityIntent.putExtra("groupId", groupId)
         tasksActivityIntent.putExtra("tableId", tableId)
         tasksActivityIntent.putExtra("listId", listId)
         tasksActivityIntent.putExtra("cardId", cardId)
+        tasksActivityIntent.putExtra("tasksListId", tasksListId)
+        tasksActivityIntent.putExtra("taskId", taskID)
         context.startActivity(tasksActivityIntent)
-    }*/
+    }
 
     override fun getItemCount() = tasksList.size
 

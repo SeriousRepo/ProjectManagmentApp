@@ -19,12 +19,6 @@ class TablesAdapter(activityContext: Context, table: List<TableModel>, private v
     private var context = activityContext
     private var data = table
 
-    init {
-        if (groupId != 0) {
-            data = listOf(TableModel(0,"",false,0)) + table
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TablesAdapter.ViewHolder {
         val textView = LayoutInflater.from(parent.context).
             inflate(R.layout.view_tables, parent, false) as View
@@ -34,12 +28,7 @@ class TablesAdapter(activityContext: Context, table: List<TableModel>, private v
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(groupId != 0) {
-            if (position == 0) {
-                holder.showUsersField(groupId)
-            }
-            else {
                 holder.bindData(data[position])
-            }
         }
         else {
             holder.bindData(data[position])
@@ -52,15 +41,6 @@ class TablesAdapter(activityContext: Context, table: List<TableModel>, private v
 
         private var view = textView
         private lateinit var table : TableModel
-
-        fun showUsersField(groupId: Int) {
-            view.findViewById<TextView>(R.id.view_table).text = "Group members"
-            view.setOnClickListener{
-                val groupMembersActivityIntent = Intent(context, GroupMembersActivity::class.java)
-                groupMembersActivityIntent.putExtra("groupId", groupId)
-                context.startActivity(groupMembersActivityIntent)
-            }
-        }
 
         fun bindData(tableToBind : TableModel) {
             table = tableToBind

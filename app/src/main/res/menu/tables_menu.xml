@@ -6,7 +6,15 @@
         android:id="@+id/menu_add"
         android:icon="@drawable/ic_add"
         android:title="Create list"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_show_members"
+        android:title="Show group members"/>
+    <item
+        android:id="@+id/menu_edit"
+        android:title="Edit group"
+        android:icon="@drawable/ic_edit"
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/menu_remove"
         android:title="Remove Group"/>

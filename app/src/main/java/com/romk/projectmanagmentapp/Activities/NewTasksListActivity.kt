@@ -66,6 +66,7 @@ class NewTasksListActivity: AppCompatActivity() {
             tasksListActivityIntent.putExtra("tableId", tableId)
             tasksListActivityIntent.putExtra("listId", listId)
             tasksListActivityIntent.putExtra("cardId", cardId)
+            tasksListActivityIntent.putExtra("cardName", "")
             startActivity(tasksListActivityIntent)
         }
         else {

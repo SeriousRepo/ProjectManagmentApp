@@ -29,6 +29,7 @@ class TasksListActivity : AppCompatActivity() {
     private var groupId = 0
     private var listId = 0
     private var cardId = 0
+    private var cardName = ""
     private val tasksModels = mutableListOf<TasksModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +38,7 @@ class TasksListActivity : AppCompatActivity() {
         groupId = intent.extras.getInt("groupId")
         listId = intent.extras.getInt("listId")
         cardId = intent.extras.getInt("cardId")
+        cardName = intent.extras.getString("cardName")
         setContentView(R.layout.activity_tasks_list)
         setSupportActionBar(findViewById(R.id.tasks_list_toolbar))
 
@@ -58,6 +60,16 @@ class TasksListActivity : AppCompatActivity() {
         }
         R.id.menu_remove -> {
             removeCard()
+            true
+        }
+        R.id.menu_edit -> {
+            val editCardActivityIntent = Intent(this, EditCardActivity::class.java)
+            editCardActivityIntent.putExtra("groupId", groupId)
+            editCardActivityIntent.putExtra("tableId", tableId)
+            editCardActivityIntent.putExtra("listId", listId)
+            editCardActivityIntent.putExtra("cardId", cardId)
+            editCardActivityIntent.putExtra("cardName", cardName)
+            startActivity(editCardActivityIntent)
             true
         }
         R.id.menu_logout -> {
@@ -150,7 +162,7 @@ class TasksListActivity : AppCompatActivity() {
             SessionModel.instance.email,
             SessionModel.instance.token)
 
-        if(connection.get() == 200)
+        if(connection.get().first == 200)
         {
             val listsActivityIntent = Intent(this, ListsActivity::class.java)
             listsActivityIntent.putExtra("groupId", groupId)

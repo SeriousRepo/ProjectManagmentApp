@@ -1,9 +1,12 @@
 package com.romk.projectmanagmentapp.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import com.romk.projectmanagmentapp.Adapters.GroupMembersAdapter
@@ -12,6 +15,7 @@ import com.romk.projectmanagmentapp.Models.SessionModel
 import com.romk.projectmanagmentapp.Models.UserModel
 import com.romk.projectmanagmentapp.NetworkConnection.HttpGetRequestHandler
 import com.romk.projectmanagmentapp.R
+import com.romk.projectmanagmentapp.Utils
 import org.json.JSONObject
 
 class GroupMembersActivity : AppCompatActivity() {
@@ -27,13 +31,37 @@ class GroupMembersActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         groupId = intent.extras.getInt("groupId")
         setContentView(R.layout.activity_group_members)
-
+        setSupportActionBar(findViewById(R.id.group_members_toolbar))
 
         getGroup()
         setRecyclerView()
     }
 
-    fun getGroup() {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.group_members_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId){
+        R.id.menu_add -> {
+            openNewMemberActivity()
+            true
+        }
+        R.id.menu_remove -> {
+            removeMember()
+            true
+        }
+        R.id.menu_logout -> {
+            Utils().deleteSession(this)
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun getGroup() {
         val connection = HttpGetRequestHandler().execute(
             "http://kanban-project-management-api.herokuapp.com/v1/groups/${groupId}",
             SessionModel.instance.email,
@@ -61,7 +89,7 @@ class GroupMembersActivity : AppCompatActivity() {
         }
     }
 
-    fun setRecyclerView() {
+    private fun setRecyclerView() {
         viewManager = LinearLayoutManager(this)
 
         viewAdapter = GroupMembersAdapter(group)
@@ -71,5 +99,26 @@ class GroupMembersActivity : AppCompatActivity() {
             layoutManager = viewManager
             adapter = viewAdapter
         }
+    }
+
+    private fun openNewMemberActivity() {
+        val newMemberActivity = Intent(this, NewMemberActivity::class.java)
+        newMemberActivity.putExtra("groupId", groupId)
+        startActivity(newMemberActivity)
+    }
+
+    private fun removeMember() {
+        val deleteFromGroupMemberActivity = Intent(this, DeleteGroupMemberActivity::class.java)
+        val memberIds = arrayListOf<Int>()
+        val memberEmails = arrayListOf<String>()
+        for (member in group.members) {
+            memberIds.add(member.id)
+            memberEmails.add(member.email)
+        }
+        deleteFromGroupMemberActivity.putExtra("memberIds", memberIds)
+        deleteFromGroupMemberActivity.putExtra("memberEmails", memberEmails)
+        deleteFromGroupMemberActivity.putExtra("leaderId", group.leader.id)
+        deleteFromGroupMemberActivity.putExtra("groupId", groupId)
+        startActivity(deleteFromGroupMemberActivity)
     }
 }

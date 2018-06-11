@@ -6,40 +6,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/new_task_toolbar"
+        android:id="@+id/edit_group_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:elevation="4dp"
-        app:title="New task"
+        app:title="Edit group"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <EditText
-        android:id="@+id/new_task_content_edit_text"
+        android:id="@+id/edit_group_name_edit_text"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_task_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_group_toolbar" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/edit_group_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_group_name_edit_text" />
 
     <Button
-        android:id="@+id/button_create_task"
+        android:id="@+id/button_edit_group"
         android:layout_width="250dp"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="CREATE TASK"
+        android:text="EDIT GROUP"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_task_content_edit_text" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_group_recycler_view"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

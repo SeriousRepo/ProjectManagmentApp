@@ -2,19 +2,11 @@ package com.romk.projectmanagmentapp.Activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.DrawableUtils
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.romk.projectmanagmentapp.Adapters.GroupsAdapter
 import com.romk.projectmanagmentapp.Models.SessionModel
 import com.romk.projectmanagmentapp.Models.SimpleGroupModel
@@ -41,7 +33,7 @@ class GroupsActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.basic_menu, menu)
+        inflater.inflate(R.menu.groups_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

@@ -57,6 +57,14 @@ class ListsActivity : AppCompatActivity() {
             Utils().deleteSession(this)
             true
         }
+        R.id.menu_edit -> {
+            val editTableActivityIntent = Intent(this, EditTableActivity::class.java)
+            editTableActivityIntent.putExtra("groupId", groupId)
+            editTableActivityIntent.putExtra("tableId", tableId)
+
+            startActivity(editTableActivityIntent)
+            true
+        }
         else -> {
             super.onOptionsItemSelected(item)
         }
@@ -133,7 +141,7 @@ class ListsActivity : AppCompatActivity() {
             SessionModel.instance.email,
             SessionModel.instance.token)
 
-        if(connection.get() == 200)
+        if(connection.get().first == 200)
         {
             val tablesActivityIntent = Intent(this, TablesActivity::class.java)
             tablesActivityIntent.putExtra("groupId", groupId)

@@ -6,7 +6,12 @@
         android:id="@+id/menu_add"
         android:icon="@drawable/ic_add"
         android:title="Create tasks list"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_edit"
+        android:title="Edit card"
+        android:icon="@drawable/ic_edit"
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/menu_remove"
         android:title="Remove Card"/>

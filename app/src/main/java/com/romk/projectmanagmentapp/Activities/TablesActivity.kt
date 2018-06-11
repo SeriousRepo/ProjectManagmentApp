@@ -38,8 +38,26 @@ class TablesActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.tables_menu, menu)
+        menu.findItem(R.id.menu_edit).isVisible = false
         if (groupId == 0) {
             menu.findItem(R.id.menu_remove).isVisible = false
+            menu.findItem(R.id.menu_show_members).isVisible = false
+        }
+        else {
+            val connection = HttpGetRequestHandler().execute(
+                "http://kanban-project-management-api.herokuapp.com/v1/groups/$groupId",
+                SessionModel.instance.email,
+                SessionModel.instance.token
+            )
+            if (connection.get().first == 200 &&
+                connection.get().second
+                    .getJSONObject("data")
+                    .getJSONObject("group")
+                    .getJSONObject("leader")
+                    .getString("email") == SessionModel.instance.email) {
+
+                menu.findItem(R.id.menu_edit).isVisible = true
+            }
         }
         return super.onCreateOptionsMenu(menu)
     }
@@ -49,10 +67,22 @@ class TablesActivity : AppCompatActivity() {
             openNewTableActivity()
             true
         }
+        R.id.menu_edit -> {
+            val editGroupActivityIntent = Intent(this, EditGroupActivity::class.java)
+            editGroupActivityIntent.putExtra("groupId", groupId)
+            startActivity(editGroupActivityIntent)
+            true
+        }
         R.id.menu_remove -> {
             if(groupId != 0) {
                 removeGroup()
             }
+            true
+        }
+        R.id.menu_show_members -> {
+            val openGroupMembersActivityIntent = Intent(this, GroupMembersActivity::class.java)
+            openGroupMembersActivityIntent.putExtra("groupId", groupId)
+            startActivity(openGroupMembersActivityIntent)
             true
         }
         R.id.menu_logout -> {
@@ -116,7 +146,7 @@ class TablesActivity : AppCompatActivity() {
             "http://kanban-project-management-api.herokuapp.com/v1/groups/${groupId}",
             SessionModel.instance.email,
             SessionModel.instance.token)
-        if(connection.get() == 200) {
+        if(connection.get().first == 200) {
             val groupsActivityIntent = Intent(this, GroupsActivity::class.java)
             startActivity(groupsActivityIntent)
             Toast.makeText(this, "Removed group", Toast.LENGTH_SHORT).show()

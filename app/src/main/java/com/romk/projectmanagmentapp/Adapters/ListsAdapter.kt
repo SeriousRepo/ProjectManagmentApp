@@ -46,7 +46,9 @@ class ListsAdapter(private val context: Context,
                 currentTextView.setOnClickListener{
                     onClickTextView(
                         lists[position].id,
-                        cards[position][textViewIndex].id)}
+                        cards[position][textViewIndex].id,
+                        currentTextView.text.toString())
+                }
             }
             val lastTextView = holder.cardsLinearLayout.getChildAt(numberOfChild) as TextView
             lastTextView.text = "+"
@@ -56,12 +58,13 @@ class ListsAdapter(private val context: Context,
         }
     }
 
-    private fun onClickTextView(listId: Int, cardId: Int) {
+    private fun onClickTextView(listId: Int, cardId: Int, cardName: String) {
         val tasksListActivityIntent = Intent(context, TasksListActivity::class.java)
         tasksListActivityIntent.putExtra("groupId", groupId)
         tasksListActivityIntent.putExtra("tableId", tableId)
         tasksListActivityIntent.putExtra("listId", listId)
         tasksListActivityIntent.putExtra("cardId", cardId)
+        tasksListActivityIntent.putExtra("cardName", cardName)
         context.startActivity(tasksListActivityIntent)
     }
 

@@ -13,7 +13,7 @@ class Utils {
             SessionModel.instance.email,
             SessionModel.instance.token
         )
-        if (connection.get() == 200) {
+        if (connection.get().first == 200) {
             val logoutActivityIntent = Intent(context, LogoutActivity::class.java)
             context.startActivity(logoutActivityIntent)
         }
